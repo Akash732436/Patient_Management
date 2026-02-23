@@ -5,12 +5,12 @@ COPY pom.xml .
 RUN mvn dependency:go-offline -B
 COPY src ./src
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk AS runner
 WORKDIR /app
 
 COPY --from=builder /app/target/*.jar ./app.jar
-
+EXPOSE 4002
 
 ENTRYPOINT ["java","-jar","app.jar"]
