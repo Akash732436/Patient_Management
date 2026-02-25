@@ -8,4 +8,7 @@ Content-Type: application/json
   "password": "password123"
 }
 
+
+> {% client.global.set("token",response.body.token) %}
+###Above stores the token in a global variable called token, this is used by the validate.http
 ###
