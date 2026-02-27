@@ -10,23 +10,6 @@ management:
     web:
       exposure:
         include: "*"
-#spring:
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: patient-service-route
-#          uri: http://patient-service:4000
-#          predicates:
-#            - Path=/patients/**
-##          filters:
-##            - StripPrefix=1
-#        - id: api-docs-patient-route
-#          uri: http://patient-service:4000
-#          predicates:
-#            - Path=/api-docs/patients
-#          filters:
-#            - RewritePath=/api-docs/patients,/v3/api-docs
-
 
 spring:
   cloud:
@@ -34,12 +17,19 @@ spring:
       server:
         webflux:
           routes:
+            - id: auth-service-route
+              uri: http://auth-service:4005
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
             - id: patient-service-route
               uri: http://patient-service:4000
               predicates:
                 - Path=/api/patients/**
               filters:
                 - StripPrefix=1
+                - JwtValidation
 
             - id: api-docs-patient-route
               uri: http://patient-service:4000
@@ -47,4 +37,5 @@ spring:
                 - Path=/api-docs/patients/**
               filters:
                 - RewritePath=/api-docs/patients, /v3/api-docs
+                - JwtValidation
 
